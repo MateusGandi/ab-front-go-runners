@@ -28,4 +28,4 @@ jobs:
           BRANCH: build # O nome do branch para onde deseja enviar os ativos
           FOLDER: build # O diretório onde seus ativos são gerados
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # O GitHub adicionará automaticamente - você não precisa se preocupar em obter um token
-          MESSAGE: "Build: ({sha}) {msg}" # A mensagem de commit
+          MESSAGE: "Build: ({sha}) {msg}" # A mensagem de commitzx
