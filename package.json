@@ -1,6 +1,7 @@
 {
-  "name": "-",
+  "name": "go-runners",
   "version": "0.1.0",
+  "homepage": "https://goianiarunners.com",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.3",
