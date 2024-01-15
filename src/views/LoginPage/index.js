@@ -32,7 +32,7 @@ const styles = {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
-    minWidth: "350px",
+    maxWidth: "350px",
     width: "80%",
     minHeight: "80vh",
   },
@@ -60,7 +60,6 @@ const styles = {
   },
   imageLabel: {
     backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
-    backgroundRepeat: "no-repeat",
     backgroundColor: "#000",
     borderRadius: "0 5px 5px 0",
   },
