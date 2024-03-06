@@ -31,7 +31,7 @@ const PaymentDialog = ({
         <Typography variant="body2" color="textSecondary">
           <p>
             <span style={{ fontWeight: "bold" }}>Atenção: </span>
-            Realize o pagamento via QRcode abaixo
+            Realize o pagamento escaneando o QRcode abaixo
           </p>
         </Typography>
       </DialogTitle>
