@@ -70,7 +70,7 @@ export default function Orders() {
             <TableCell>Name</TableCell>
             <TableCell>Ship To</TableCell>
             <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell align="right">Sale Amountt</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
