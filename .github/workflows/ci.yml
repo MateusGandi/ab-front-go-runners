@@ -1,8 +1,13 @@
+name: Deploy to Hosting
+
+on:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do repositorio
+      - name: Checkout do repositório
         uses: actions/checkout@v2
       - name: Deploy para meu hosting
         uses: easingthemes/ssh-deploy@main
