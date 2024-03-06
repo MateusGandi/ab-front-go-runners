@@ -283,7 +283,7 @@ function RouteElement({ path, alertCustom, styles, fetchData }) {
     case "/dash":
       return <Dashboard alertCustom={alertCustom} />;
     default:
-      return null;
+      return null; //
   }
 }
 
