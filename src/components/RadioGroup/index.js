@@ -14,8 +14,8 @@ export default function BasicCheckbox({ options, defaultValue, label }) {
   return (
     <FormControl>
       <FormLabel id="basic-checkbox-label">{label}</FormLabel>
-      {options.map((option) => (
-        <div key={option.value}>
+      {options.map((option, index) => (
+        <div key={index}>
           <Checkbox
             checked={selectedOption === option.value}
             onChange={() => handleChange(option.value)}

@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import React from "react";
 
 export default function SimplePaper(props) {
-  const { data, xs, md, isSelected, onClick } = props;
+  const { edit, key, data, isSelected, setFunction } = props;
 
   const customStyle = {
     card: {
@@ -16,6 +16,7 @@ export default function SimplePaper(props) {
       cursor: "pointer",
     },
     title: {
+      borderRadius: "5px 5px 0 0",
       padding: "10px",
       textAlign: "center",
       width: "100%",
@@ -23,27 +24,40 @@ export default function SimplePaper(props) {
   };
 
   return (
-    <Grid item xs={xs} md={md}>
-      <Paper key={data.lote} style={customStyle.card} elevation={0}>
-        <div style={customStyle.title}>{data.lote}</div>
-        <Typography style={{ margin: "10px" }} variant="subtitle1">
-          {data.descricao}
+    <Paper key={key} variant="outlined" style={customStyle.card} elevation={0}>
+      <div style={customStyle.title}>
+        <Typography variant="button">
+          <span style={{ fontWeight: "bold" }}>{data.titulo}</span>
         </Typography>
-        <Typography style={{ margin: "10px" }} variant="subtitle1">
-          {data.vagas}
+      </div>
+      <Typography style={{ margin: "10px" }} variant="body2">
+        {`${data.criterio}`}
+        <Typography variant="body2" color="secondaryText">
+          {`Valor do ingresso: R$ ${Number(data.valorIngresso).toFixed(2)}`}
         </Typography>
-        <Button
-          style={{ margin: "10px" }}
-          variant="contained"
-          disableElevation
-          disabled={data.vagas === 0 || isSelected}
-          onClick={() => {
-            alert("oi");
-          }}
-        >
-          {data.vagas ? (isSelected ? "Inscrito" : "Inscrever") : "Esgotado"}
-        </Button>
-      </Paper>
-    </Grid>
+        <Typography variant="body2" color="secondaryText">
+          {`${data.numVagasDisponiveis}/${data.numVagas} vagas`}
+        </Typography>
+      </Typography>
+
+      <Button
+        style={{ margin: "10px" }}
+        variant="text"
+        disableElevation
+        disabled={data.numVagasDisponiveis === 0 || isSelected}
+        onClick={() => {
+          setFunction(data);
+        }}
+      >
+        {edit && "Editar"}
+        {!edit
+          ? data.numVagasDisponiveis > 0
+            ? isSelected
+              ? "Selecionado"
+              : "Inscrever"
+            : "Esgotado"
+          : null}
+      </Button>
+    </Paper>
   );
 }

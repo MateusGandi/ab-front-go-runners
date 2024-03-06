@@ -1,0 +1,67 @@
+import React, { useEffect, useState, useRef } from "react";
+import Grid from "@mui/material/Grid";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-routing-machine";
+import "leaflet/dist/images/marker-icon-2x.png";
+import "leaflet/dist/images/marker-icon.png";
+import "leaflet/dist/images/marker-shadow.png";
+
+export default function Mapa() {
+  const [markers, setMarkers] = useState([]);
+  const mapRef = useRef(null);
+  const routingControlRef = useRef(null);
+
+  useEffect(() => {
+    if (!mapRef.current) {
+      const icon = new L.Icon({
+        iconUrl: require("./icons/marker-icon.png"),
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -38],
+      });
+
+      mapRef.current = L.map("map").setView([48.8566, 2.3522], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(mapRef.current);
+
+      mapRef.current.on("click", function (e) {
+        const latlng = e.latlng;
+
+        const newMarker = {
+          geocode: [latlng.lat, latlng.lng],
+          popUp: "Novo marcador",
+        };
+
+        const leafletMarker = L.marker(newMarker.geocode, { icon });
+        leafletMarker.bindPopup(newMarker.popUp);
+
+        leafletMarker.addTo(mapRef.current);
+
+        setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (markers.length > 0) {
+      routingControlRef.current = L.Routing.control({
+        waypoints: markers.map((marker) => L.latLng(marker.geocode)),
+        routeWhileDragging: true,
+        lineOptions: {
+          styles: [
+            {
+              color: "blue",
+              weight: 8,
+            },
+          ],
+        },
+      }).addTo(mapRef.current);
+    }
+  }, [markers]);
+
+  return <div id="map" style={{ height: "500px" }}></div>;
+}

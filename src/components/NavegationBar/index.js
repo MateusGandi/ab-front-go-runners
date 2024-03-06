@@ -1,4 +1,5 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,18 +19,46 @@ import Divider from "@mui/material/Divider";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logo from "../../images/logo.png";
 import AdbIcon from "@mui/icons-material/Adb";
-
-const pages = ["Products", "Pricing", "Blog"];
-
+import axios from "../../utils/configAxios";
+import DataAttemp from "../../utils/DataAttemp";
+const REACT_APP_URL_BIBLIOTECA_RUNNERS =
+  process.env.REACT_APP_URL_BIBLIOTECA_RUNNERS;
+const pages = [
+  { name: "HOME", path: "/home" },
+  { name: "BLOG", loc: "https://goianiarunners.com.br" },
+  { name: "POLÍTICAS E TERMOS DE USO", path: "/termos" },
+];
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const dataMaganer = DataAttemp();
+  const navigate = useNavigate();
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
   const open = Boolean(anchorEl);
+
+  const handleScroll = () => {
+    const position = window.scrollY;
+    setScrollPosition(position);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
   };
 
   const handleOpenNavMenu = (event) => {
@@ -40,25 +69,50 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar
+      sx={{
+        minHeight: "60px",
+        position: "fixed",
+        background:
+          scrollPosition > 0
+            ? {
+                xs: "linear-gradient(0deg, transparent, rgba(0,0,0,0.5) 100%)",
+                md: "#0C8CE9",
+              }
+            : {
+                xs: "#0C8CE9",
+                md: "linear-gradient(0deg, transparent, rgba(0,0,0,0.5) 100%)",
+              },
+        transition: "background-color 0.3s ease-out",
+      }}
+      elevation={0}
+    >
+      <Container sx={{ padding: "0 5vw" }}>
         <Toolbar disableGutters>
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              flexGrow: 1,
-              fontFamily: "Roboto Condensed, sans-serif",
-              fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
+            sx={{ cursor: "pointer", display: { md: "flex", xs: "none" } }}
+            onClick={() => {
+              navigate("/home");
             }}
           >
-            <img style={{ pointerEvents: "none", width: "70px" }} src={Logo} />
+            <img
+              style={{
+                pointerEvents: "none",
+                marginTop: "5px",
+                width: "70px",
+                filter:
+                  scrollPosition > 0
+                    ? {
+                        sx: "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.5))",
+                        md: "none",
+                      }
+                    : "none",
+              }}
+              src={Logo}
+            />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -88,14 +142,45 @@ function ResponsiveAppBar() {
               sx={{
                 display: { xs: "block", md: "none" },
               }}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    left: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 6,
+                  },
+                },
+              }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {pages.map((page, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
                   <Typography
                     style={{ fontFamily: "Roboto Condensed" }}
                     textAlign="center"
+                    onClick={() => {
+                      page.loc
+                        ? window.open(page.loc, "_blank")
+                        : navigate(page.path);
+                    }}
                   >
-                    {page}
+                    {page.name}
                   </Typography>
                 </MenuItem>
               ))}
@@ -107,7 +192,6 @@ function ResponsiveAppBar() {
             component="a"
             href="#app-bar-with-responsive-menu"
             sx={{
-              mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "Roboto Condensed, sans-serif",
@@ -117,22 +201,43 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            <img style={{ pointerEvents: "none", width: "40px" }} src={Logo} />
+            <img
+              style={{
+                pointerEvents: "none",
+                width: "60px",
+                filter:
+                  scrollPosition > 0
+                    ? "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.5))"
+                    : "none",
+              }}
+              src={Logo}
+            />
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              width: "100%",
+              justifyContent: "space-around",
+            }}
+          >
+            {pages.map((page, index) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                key={index}
+                sx={{ color: "white", display: "block" }}
+                onClick={() => {
+                  page.loc
+                    ? window.open(page.loc, "_blank")
+                    : navigate(page.path);
+                }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Account settings">
+            <Tooltip title="Sua conta">
               <IconButton
                 onClick={handleClick}
                 size="small"
@@ -141,7 +246,17 @@ function ResponsiveAppBar() {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    backgroundColor: "rgba(256,256,256,0.3)",
+                  }}
+                >
+                  {dataMaganer &&
+                    dataMaganer.userData.nome &&
+                    dataMaganer.userData.nome[0].toLocaleUpperCase()}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -179,31 +294,30 @@ function ResponsiveAppBar() {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem onClick={handleClose}>
-                <Avatar /> Profile
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Avatar /> My account
+              <MenuItem
+                onClick={() => {
+                  navigate("/perfil");
+                }}
+              >
+                <Avatar />
+                <Typography variant="body1">
+                  {dataMaganer && dataMaganer.userData.nome
+                    ? `Bem vindo, ${dataMaganer.userData.nome}!`
+                    : "Bem vindo"}
+                  <Typography variant="body2" color="textSecondary">
+                    Acesse seu perfil
+                  </Typography>
+                </Typography>
               </MenuItem>
               <Divider />
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <PersonAdd fontSize="small" />
-                </ListItemIcon>
-                Add another account
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <Settings fontSize="small" />
-                </ListItemIcon>
-                Settings
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
+              {dataMaganer && dataMaganer.userData.nome && (
+                <MenuItem onClick={handleLogout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Sair
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>

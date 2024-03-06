@@ -7,7 +7,14 @@ label {
   align-self: center !important;
   font-size: 14px;
 }
+*::-webkit-scrollbar {
+  display: none !important;
+}
 
+/* A linha abaixo é necessária para o Firefox */
+* {
+  scrollbar-width: none !important;
+}
 .swal2-confirm {
   background-color: #1976d2 !important;
   color: #ffffff;
@@ -15,6 +22,72 @@ label {
   width: 100%;
   transition: background-color 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra padrão */
+}
+
+.mp-checkout-bricks__radio-2_kHgx {
+  display: none !important;
+}
+.mp-checkout-bricks__payment-options-3q4fNz {
+  margin: 0 -16px;
+}
+.mp-checkout-bricks__payment-form label {
+  align-self: normal !important;
+}
+
+.mp-checkout-bricks__payment-form button[type="submit"] {
+  border-radius: 100px;
+}
+@media only screen and (max-width: 600px) {
+  .mp-checkout-bricks__payment-form button[type="submit"] {
+    width: 92vw !important;
+  }
+}
+
+.MuiButton-containedPrimary:not(.no-round),
+.MuiButton-textPrimary:not(.no-round),
+.MuiButton-outlinedPrimary:not(.no-round),
+.MuiButton-containedSuccess:not(.no-round) {
+  border-radius: 100px !important;
+}
+
+.margin-bottom-25n6kp {
+  margin-left: -16px;
+}
+
+.blue-hover:hover {
+  color: #0099ff;
+}
+.green-hover:hover {
+  color: #2ab13f;
+}
+.black-hover:hover {
+  color: #000;
+}
+
+.show-box {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.show-box-dash {
+  border-radius: 5px;
+  padding: 15px;
+  border: 2px dashed #f0f0f0;
+}
+
+.button-container-2XwAbq.svelte-f1k4kg button {
+  width: "100%";
+  background-color: #0c8ce9;
+  transition: all 0.5s;
+}
+
+.button-container-2XwAbq.svelte-f1k4kg button:hover {
+  background-color: #0031b2;
+}
+
+input {
+  font-family: "Roboto" !important;
 }
 
 .swal2-confirm:hover {
