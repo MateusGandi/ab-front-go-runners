@@ -1,7 +1,9 @@
 name: Deploy to Hosting
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main # Substitua "main" pelo nome da sua branch principal, se necessário
 
 jobs:
   build:
