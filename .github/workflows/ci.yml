@@ -3,7 +3,7 @@ name: Deploy to Hosting
 on:
   push:
     branches:
-      - main # Substitua "main" pelo nome da sua branch principal, se necessário
+      - main
 
 jobs:
   build:
@@ -20,4 +20,4 @@ jobs:
           REMOTE_HOST: ${{secrets.REMOTE_HOST}}
           REMOTE_USER: ${{secrets.REMOTE_USER}}
           REMOTE_PORT: ${{secrets.REMOTE_PORT}}
-          TARGET: ${{secrets.REMOTE_TARGET}}
+          TARGET: "/home/srv488264.hstgr.cloud/public_html"
